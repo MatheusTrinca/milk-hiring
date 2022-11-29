@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "milk-hiring",
+    "slug": "milk-hiring",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
