@@ -1,0 +1,193 @@
+[
+  {
+    "_id": 2,
+    "type": "Antibiótico",
+    "amount_of_milk_produced": "100",
+    "farmer": {
+      "name": "Fazenda BovControl",
+      "city": "Para"
+    },
+    "from": {
+      "name": "Santo Alencar"
+    },
+    "to": {
+      "name": "Fernando santos"
+    },
+    "number_of_cows_head": "100",
+    "had_supervision": true,
+    "location": {
+      "latitude": -23.5,
+      "longitude": -46.6
+    },
+    "created_at": "2022-02-01T10:10:21.748Z",
+    "updated_at": "2022-10-04T17:09:50.000Z",
+    "__v": 0
+  },
+  {
+    "type": "BPA",
+    "amount_of_milk_produced": "300",
+    "farmer": {
+      "name": "Fazenda Teste 2",
+      "city": "Joinville"
+    },
+    "from": {
+      "name": "Luciano Camargo"
+    },
+    "to": {
+      "name": "Fernando Siqueira"
+    },
+    "number_of_cows_head": "17",
+    "had_supervision": true,
+    "location": {
+      "latitude": -23.5,
+      "longitude": -46.6
+    },
+    "created_at": "2022-02-01T10:10:21.748Z",
+    "updated_at": "2022-02-01T10:10:21.748Z",
+    "__v": 0
+  },
+  {
+    "_id": 16314,
+    "type": "Antibiótico",
+    "amount_of_milk_produced": "444",
+    "farmer": {
+      "name": "Fazenda leo",
+      "city": "Camaçari"
+    },
+    "from": {
+      "name": "Fazendeiro Alves"
+    },
+    "to": {
+      "name": "klee"
+    },
+    "number_of_cows_head": "44",
+    "had_supervision": true,
+    "location": {
+      "latitude": 0,
+      "longitude": 0
+    },
+    "created_at": "2022-02-01T10:10:21.748Z",
+    "updated_at": "2022-02-01T10:10:21.748Z",
+    "__v": 0
+  },
+  {
+    "_id": 21078,
+    "type": "Antibiótico",
+    "amount_of_milk_produced": "444",
+    "farmer": {
+      "name": "Fazenda Futuro",
+      "city": "camaçari"
+    },
+    "from": {
+      "name": "João Alves"
+    },
+    "to": {
+      "name": "leo alves"
+    },
+    "number_of_cows_head": "444",
+    "had_supervision": true,
+    "location": {
+      "latitude": 21.02484526681003,
+      "longitude": 18.174373311538524
+    },
+    "created_at": "2022-02-01T10:10:21.748Z",
+    "updated_at": "2022-09-24T18:18:26.000Z",
+    "__v": 0
+  },
+  {
+    "_id": 37615,
+    "type": "BPA",
+    "amount_of_milk_produced": "44",
+    "farmer": {
+      "name": "Fazenda Futuro",
+      "city": "Camaçari"
+    },
+    "from": {
+      "name": "Fazendeiro Alves"
+    },
+    "to": {
+      "name": ""
+    },
+    "number_of_cows_head": "440",
+    "had_supervision": false,
+    "location": {
+      "latitude": 0,
+      "longitude": 0
+    },
+    "created_at": "2022-09-25T00:13:57.000Z",
+    "updated_at": "2022-09-25T00:13:57.000Z",
+    "__v": 0
+  },
+  {
+    "_id": 13613,
+    "type": "BPA",
+    "amount_of_milk_produced": "57",
+    "farmer": {
+      "name": "Leandro alves",
+      "city": "leolandia"
+    },
+    "from": {
+      "name": "Leo alves"
+    },
+    "to": {
+      "name": ""
+    },
+    "number_of_cows_head": "117",
+    "had_supervision": true,
+    "location": {
+      "latitude": -12.642683307420432,
+      "longitude": -38.09577941894532
+    },
+    "created_at": "2022-09-26T00:44:24.000Z",
+    "updated_at": "2022-09-26T00:44:24.000Z",
+    "__v": 0
+  },
+  {
+    "_id": 7248,
+    "type": "BPA",
+    "amount_of_milk_produced": "5000",
+    "farmer": {
+      "name": "Fazenda leo alves",
+      "city": "Bov control"
+    },
+    "from": {
+      "name": "Fazendeiro Alves"
+    },
+    "to": {
+      "name": ""
+    },
+    "number_of_cows_head": "50",
+    "had_supervision": false,
+    "location": {
+      "latitude": -13.004557745339769,
+      "longitude": -38.50708007812501
+    },
+    "created_at": "2022-10-04T17:08:00.000Z",
+    "updated_at": "2022-10-04T17:08:00.000Z",
+    "__v": 0
+  },
+  {
+    "_id": 1,
+    "type": "BPA",
+    "amount_of_milk_produced": "300",
+    "farmer": {
+      "name": "Fazenda São Rock",
+      "city": "São Rock"
+    },
+    "from": {
+      "name": "Fernando Siqueira"
+    },
+    "to": {
+      "name": "Fernando Siqueira"
+    },
+    "number_of_cows_head": "17",
+    "had_supervision": true,
+    "location": {
+      "latitude": -23.5,
+      "longitude": -46.6
+    },
+    "created_at": "2022-02-01T10:10:21.748Z",
+    "updated_at": "2022-02-01T10:10:21.748Z",
+    "__v": 0
+  }
+]
