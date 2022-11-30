@@ -63,8 +63,11 @@ export const EditScreen: React.FC = () => {
               setItems={setTypes}
             />
           </SelectorContainer>
-          <TextInput label="Amount of Milk Produced" />
-          <TextInput label="Number of Cows Head" />
+          <TextInput
+            label="Amount of Milk Produced"
+            keyboardType="number-pad"
+          />
+          <TextInput label="Number of Cows Head" keyboardType="number-pad" />
           <SelectorContainer>
             <SelectorLabel>Had Supervision</SelectorLabel>
             <Selector

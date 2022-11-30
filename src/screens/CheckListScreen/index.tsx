@@ -1,16 +1,21 @@
 import React from 'react';
+import { formatDistance, subDays } from 'date-fns';
 import item from '../../assets/data/checklist.json';
 import { ICheckItem } from '../../models/CheckItem';
 import {
+  BackButton,
+  BackButtonIcon,
   Container,
   FarmCity,
   FarmName,
+  HeaderContainer,
   InfoContainer,
   Label,
   LabelItem,
   Supervision,
   Type,
 } from './styles';
+import { useNavigation } from '@react-navigation/native';
 
 interface ICheckItemProps {
   checklist: ICheckItem;
@@ -19,8 +24,15 @@ interface ICheckItemProps {
 export const CheckListScreen: React.FC<ICheckItemProps> = ({
   checklist = item,
 }) => {
+  const navigation = useNavigation();
+
   return (
     <Container>
+      <HeaderContainer>
+        <BackButton onPress={() => navigation.goBack()}>
+          <BackButtonIcon name="arrow-back-outline" />
+        </BackButton>
+      </HeaderContainer>
       <FarmName>{checklist.farmer.name}</FarmName>
       <FarmCity>{checklist.farmer.city}</FarmCity>
       <InfoContainer>
@@ -54,10 +66,18 @@ export const CheckListScreen: React.FC<ICheckItemProps> = ({
         </Supervision>
       </Label>
       <Label>
-        Created At: <LabelItem>{checklist.created_at}</LabelItem>
+        Created At:{' '}
+        <LabelItem>{new Date(checklist.created_at).toDateString()}</LabelItem>
       </Label>
       <Label>
-        Last Update: <LabelItem>{checklist.updated_at}</LabelItem>
+        Last Update:{' '}
+        <LabelItem>
+          {formatDistance(
+            subDays(new Date(checklist.updated_at), 3),
+            new Date(),
+            { addSuffix: true }
+          )}
+        </LabelItem>
       </Label>
     </Container>
   );

@@ -1,9 +1,26 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
+import { Ionicons } from '@expo/vector-icons';
 
 export const Container = styled.View`
   padding: 0 ${RFValue(16)}px;
   flex: 1;
+`;
+
+export const HeaderContainer = styled.View`
+  flex-direction: row;
+  margin-bottom: ${RFValue(8)}px;
+  width: 100%;
+  align-items: center;
+`;
+
+export const BackButton = styled.TouchableOpacity`
+  background-color: ${({ theme }) => theme.colors.light}; ;
+`;
+
+export const BackButtonIcon = styled(Ionicons)`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: ${RFValue(28)}px;
 `;
 
 export const FarmName = styled.Text`
@@ -27,7 +44,7 @@ export const InfoContainer = styled.View`
 export const Label = styled.Text`
   font-size: ${RFValue(18)}px;
   font-family: ${({ theme }) => theme.fonts.medium};
-  margin-bottom: ${RFValue(8)}px;
+  margin-bottom: ${RFValue(12)}px;
 `;
 
 export const Type = styled.Text<{ options: 'Antibiótico' | 'BPA' | 'BPF' }>`

@@ -100,11 +100,13 @@ export const CreateScreen: React.FC = () => {
             label="Amount of Milk Produced"
             value={milkAmount}
             onChangeText={setMilkAmount}
+            keyboardType="number-pad"
           />
           <TextInput
             label="Number of Cows Head"
             value={cowsHead}
             onChangeText={setCowsHead}
+            keyboardType="number-pad"
           />
           <SelectorContainer>
             <SelectorLabel>Had Supervision</SelectorLabel>
