@@ -41,46 +41,44 @@ export const EditScreen: React.FC = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <ScrollView>
-        <Container>
-          <HeaderContainer>
-            <Title>Edit Checklist</Title>
-            <BackButton onPress={() => navigation.goBack()}>
-              <BackButtonIcon name="arrow-back-outline" />
-            </BackButton>
-          </HeaderContainer>
-          <FormContainer>
-            <TextInput label="Farmer Name" />
-            <TextInput label="Farm Name" />
-            <TextInput label="City" />
-            <SelectorContainer>
-              <SelectorLabel>Type</SelectorLabel>
-              <Selector
-                open={openTypeDropDown}
-                value={type}
-                items={types}
-                setOpen={setOpenTypeDropDown}
-                setValue={setType}
-                setItems={setTypes}
-              />
-            </SelectorContainer>
-            <TextInput label="Amount of Milk Produced" />
-            <TextInput label="Number of Cows Head" />
-            <SelectorContainer>
-              <SelectorLabel>Had Supervision</SelectorLabel>
-              <Selector
-                open={openHadSupervisionDropDown}
-                value={hadSupervision}
-                items={hadSupervisionItems}
-                setOpen={setOpenHadSupervisionDropDown}
-                setValue={setHadSupervision}
-                setItems={setHadSupervisionItems}
-              />
-            </SelectorContainer>
-            <MainButton title="Edit Checklist" />
-          </FormContainer>
-        </Container>
-      </ScrollView>
+      <Container>
+        <HeaderContainer>
+          <Title>Edit Checklist</Title>
+          <BackButton onPress={() => navigation.goBack()}>
+            <BackButtonIcon name="arrow-back-outline" />
+          </BackButton>
+        </HeaderContainer>
+        <FormContainer>
+          <TextInput label="Farmer Name" />
+          <TextInput label="Farm Name" />
+          <TextInput label="City" />
+          <SelectorContainer>
+            <SelectorLabel>Type</SelectorLabel>
+            <Selector
+              open={openTypeDropDown}
+              value={type}
+              items={types}
+              setOpen={setOpenTypeDropDown}
+              setValue={setType}
+              setItems={setTypes}
+            />
+          </SelectorContainer>
+          <TextInput label="Amount of Milk Produced" />
+          <TextInput label="Number of Cows Head" />
+          <SelectorContainer>
+            <SelectorLabel>Had Supervision</SelectorLabel>
+            <Selector
+              open={openHadSupervisionDropDown}
+              value={hadSupervision}
+              items={hadSupervisionItems}
+              setOpen={setOpenHadSupervisionDropDown}
+              setValue={setHadSupervision}
+              setItems={setHadSupervisionItems}
+            />
+          </SelectorContainer>
+          <MainButton title="Edit Checklist" />
+        </FormContainer>
+      </Container>
     </KeyboardAvoidingView>
   );
 };

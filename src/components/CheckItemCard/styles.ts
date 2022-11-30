@@ -2,7 +2,9 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 import { AntDesign } from '@expo/vector-icons';
 
-export const Container = styled.View`
+export const Container = styled.TouchableOpacity``;
+
+export const ContainerInfo = styled.View`
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.gray};
   border-radius: 8px;

@@ -17,10 +17,12 @@ import { CreateScreen } from '../screens/CreateScreen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import theme from '../global/styles/theme';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { CheckListScreen } from '../screens/CheckListScreen';
 
 type HomeStackParamList = {
   HomeScreen: undefined;
   EditScreen: { itemId: number };
+  CheckListScreen: { itemId: number };
 };
 
 export type CreateStackParamList = {
@@ -51,6 +53,7 @@ const HomeStack: React.FC = () => {
     <Home.Navigator screenOptions={{ headerShown: false }}>
       <Home.Screen name="HomeScreen" component={HomeScreen} />
       <Home.Screen name="EditScreen" component={EditScreen} />
+      <Home.Screen name="CheckListScreen" component={CheckListScreen} />
     </Home.Navigator>
   );
 };

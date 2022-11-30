@@ -8,7 +8,7 @@ interface IMainButtonProps extends TouchableOpacityProps {
 
 export const MainButton: React.FC<IMainButtonProps> = ({ title, ...props }) => {
   return (
-    <Container>
+    <Container {...props}>
       <Title>{title}</Title>
     </Container>
   );
