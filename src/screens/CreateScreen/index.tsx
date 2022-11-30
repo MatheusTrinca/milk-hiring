@@ -12,6 +12,8 @@ import {
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from '../../components/TextInput';
+import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { MainButton } from '../../components/MainButton';
 
 export const CreateScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -35,42 +37,50 @@ export const CreateScreen: React.FC = () => {
   ]);
 
   return (
-    <Container>
-      <HeaderContainer>
-        <BackButton onPress={() => navigation.goBack()}>
-          <BackButtonIcon name="arrow-back-outline" />
-        </BackButton>
-        <Title>Create Checklist</Title>
-      </HeaderContainer>
-      <FormContainer>
-        <TextInput label="Farmer Name" />
-        <TextInput label="Farm Name" />
-        <TextInput label="City" />
-        <SelectorContainer>
-          <SelectorLabel>Type</SelectorLabel>
-          <Selector
-            open={openTypeDropDown}
-            value={type}
-            items={types}
-            setOpen={setOpenTypeDropDown}
-            setValue={setType}
-            setItems={setTypes}
-          />
-        </SelectorContainer>
-        <TextInput label="Amount of Milk Produced" />
-        <TextInput label="Number of Cows Head" />
-        <SelectorContainer>
-          <SelectorLabel>Had Supervision</SelectorLabel>
-          <Selector
-            open={openHadSupervisionDropDown}
-            value={hadSupervision}
-            items={hadSupervisionItems}
-            setOpen={setOpenHadSupervisionDropDown}
-            setValue={setHadSupervision}
-            setItems={setHadSupervisionItems}
-          />
-        </SelectorContainer>
-      </FormContainer>
-    </Container>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <ScrollView>
+        <Container>
+          <HeaderContainer>
+            <Title>Create Checklist</Title>
+            <BackButton onPress={() => navigation.goBack()}>
+              <BackButtonIcon name="arrow-back-outline" />
+            </BackButton>
+          </HeaderContainer>
+          <FormContainer>
+            <TextInput label="Farmer Name" />
+            <TextInput label="Farm Name" />
+            <TextInput label="City" />
+            <SelectorContainer>
+              <SelectorLabel>Type</SelectorLabel>
+              <Selector
+                open={openTypeDropDown}
+                value={type}
+                items={types}
+                setOpen={setOpenTypeDropDown}
+                setValue={setType}
+                setItems={setTypes}
+              />
+            </SelectorContainer>
+            <TextInput label="Amount of Milk Produced" />
+            <TextInput label="Number of Cows Head" />
+            <SelectorContainer>
+              <SelectorLabel>Had Supervision</SelectorLabel>
+              <Selector
+                open={openHadSupervisionDropDown}
+                value={hadSupervision}
+                items={hadSupervisionItems}
+                setOpen={setOpenHadSupervisionDropDown}
+                setValue={setHadSupervision}
+                setItems={setHadSupervisionItems}
+              />
+            </SelectorContainer>
+            <MainButton title="Add Checklist" />
+          </FormContainer>
+        </Container>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };

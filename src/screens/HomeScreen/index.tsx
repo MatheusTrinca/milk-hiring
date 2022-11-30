@@ -41,7 +41,11 @@ export const HomeScreen: React.FC = () => {
     <Container>
       <HeaderContainer>
         <Title>Your Checklists</Title>
-        <AddButton onPress={() => navigation.navigate('CreateScreen')}>
+        <AddButton
+          onPress={() =>
+            navigation.navigate('Create', { screen: 'CreateScreen' })
+          }
+        >
           <AddButtonIcon name="text-box-plus-outline" />
         </AddButton>
       </HeaderContainer>

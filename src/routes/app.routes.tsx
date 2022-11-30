@@ -20,7 +20,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 type HomeStackParamList = {
   HomeScreen: undefined;
-  EditScreen: { itemId: string };
+  EditScreen: { itemId: number };
 };
 
 export type CreateStackParamList = {

@@ -7,11 +7,12 @@ export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.light};
   padding: 0 ${RFValue(16)}px;
+  justify-content: center;
 `;
 
 export const HeaderContainer = styled.View`
   flex-direction: row;
-  margin-bottom: ${RFValue(12)}px;
+  margin-bottom: ${RFValue(8)}px;
   width: 100%;
   position: relative;
   align-items: center;

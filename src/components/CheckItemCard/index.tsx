@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import React from 'react';
 import { ICheckItem } from '../../models/CheckItem';
 import {
@@ -20,12 +20,20 @@ import {
   FarmName,
   FarmTitle,
 } from './styles';
+import { useNavigation } from '@react-navigation/native';
+import { AppScreenNavigationProp } from '../../routes/app.routes';
 
 interface ICheckItemCardProps {
   item: ICheckItem;
 }
 
 export const CheckItemCard: React.FC<ICheckItemCardProps> = ({ item }) => {
+  const navigation = useNavigation<AppScreenNavigationProp>();
+
+  const handleDelete = () => {
+    Alert.alert('Are you sure?');
+  };
+
   return (
     <Container>
       <DetailsContainer>
@@ -44,11 +52,17 @@ export const CheckItemCard: React.FC<ICheckItemCardProps> = ({ item }) => {
         </DateTitle>
       </DetailsContainer>
       <ButtonsContainer>
-        <EditButtonContainer>
+        <EditButtonContainer
+          onPress={() =>
+            navigation.navigate('EditScreen', {
+              itemId: item._id,
+            })
+          }
+        >
           <EditIcon name="edit" />
           <EditText>Edit</EditText>
         </EditButtonContainer>
-        <DeleteButtonContainer>
+        <DeleteButtonContainer onPress={handleDelete}>
           <DeleteIcon name="delete" />
           <DeleteText>Delete</DeleteText>
         </DeleteButtonContainer>
