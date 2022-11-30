@@ -1,6 +1,7 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export const Container = styled.View`
   flex: 1;
@@ -39,3 +40,16 @@ export const BackButtonIcon = styled(Ionicons)`
 export const FormContainer = styled.View`
   margin-top: ${RFValue(10)}px;
 `;
+
+export const SelectorContainer = styled.View`
+  margin-bottom: ${RFValue(10)}px;
+`;
+
+export const SelectorLabel = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.medium};
+  font-size: ${RFValue(14)}px;
+  margin-left: ${RFValue(2)}px;
+  margin-bottom: ${RFValue(2)}px;
+`;
+
+export const Selector = styled(DropDownPicker)``;

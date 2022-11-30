@@ -14,7 +14,8 @@ export const Label = styled.Text`
 
 export const Input = styled.TextInput`
   background-color: white;
-  border-radius: 8;
+  border-radius: 8px;
   font-size: ${RFValue(16)}px;
-  padding: ${RFValue(8)}px; ;
+  padding: ${RFValue(9)}px;
+  border: 1px solid black;
 `;

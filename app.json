@@ -3,8 +3,9 @@
     "name": "milk-hiring",
     "slug": "milk-hiring",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "softwareKeyboardLayoutMode": "pan"
+    }
   }
 }
