@@ -10,10 +10,10 @@ import {
 import { Routes } from './src/routes';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-import { View } from 'react-native';
 SplashScreen.preventAutoHideAsync();
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CheckListProvider } from './src/contexts/CheckListContext';
 
 const App: React.FC = () => {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -50,14 +50,16 @@ const App: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <ThemeProvider theme={theme}>
-        <NavigationContainer>
-          <Routes />
-          <StatusBar
-            style="auto"
-            translucent
-            backgroundColor={theme.colors.light}
-          />
-        </NavigationContainer>
+        <CheckListProvider>
+          <NavigationContainer>
+            <Routes />
+            <StatusBar
+              style="auto"
+              translucent
+              backgroundColor={theme.colors.light}
+            />
+          </NavigationContainer>
+        </CheckListProvider>
       </ThemeProvider>
     </SafeAreaView>
   );

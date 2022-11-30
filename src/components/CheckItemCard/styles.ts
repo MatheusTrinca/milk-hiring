@@ -45,6 +45,16 @@ export const CityName = styled.Text`
   font-size: ${RFValue(16)}px;
 `;
 
+export const DateTitle = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.medium};
+  font-size: ${RFValue(16)}px;
+`;
+
+export const DateName = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-size: ${RFValue(16)}px;
+`;
+
 export const ButtonsContainer = styled.View`
   flex-direction: row;
   align-items: center;

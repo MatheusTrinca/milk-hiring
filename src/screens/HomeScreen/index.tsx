@@ -1,20 +1,48 @@
 import React from 'react';
-import { Container, Title, CheckList } from './styles';
-import checklists from '../../assets/data/checklists.json';
+import {
+  Container,
+  Title,
+  CheckList,
+  LoadingContainer,
+  HeaderContainer,
+  AddButtonIcon,
+  AddButton,
+} from './styles';
 import { ICheckItem } from '../../models/CheckItem';
-import { ListRenderItem } from 'react-native';
+import { ActivityIndicator, Alert, ListRenderItem } from 'react-native';
 import { CheckItemCard } from '../../components/CheckItemCard';
+import { useCheckListContext } from '../../hooks/useCheckListContext';
+import theme from '../../global/styles/theme';
 
-export const HomeScreen = () => {
+export const HomeScreen: React.FC = () => {
+  const { checkListItems, loading, error } = useCheckListContext();
+
   const renderCheckListItem: ListRenderItem<ICheckItem> = ({ item }) => {
     return <CheckItemCard item={item} />;
   };
 
+  if (error) {
+    return <>{Alert.alert('Error Fetching Data')}</>;
+  }
+
+  if (loading) {
+    return (
+      <LoadingContainer>
+        <ActivityIndicator color={theme.colors.gray} size="small" />
+      </LoadingContainer>
+    );
+  }
+
   return (
     <Container>
-      <Title>Your Checklists</Title>
+      <HeaderContainer>
+        <Title>Your Checklists</Title>
+        <AddButton>
+          <AddButtonIcon name="text-box-plus-outline" />
+        </AddButton>
+      </HeaderContainer>
       <CheckList
-        data={checklists}
+        data={checkListItems}
         keyExtractor={(item: ICheckItem) =>
           String(item._id) || item.amount_of_milk_produced
         }

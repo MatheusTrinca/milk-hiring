@@ -35,11 +35,14 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
   }, []);
 
   const fetchCheckListItems = useCallback(async () => {
+    setLoading(true);
     try {
       const { data } = await api.get('/checkList');
-      console.log(data);
+      setCheckListItems(data);
+      setLoading(false);
     } catch (err) {
       console.error(err);
+      setLoading(false);
       setError(new Error(err as string));
     }
   }, []);
@@ -49,14 +52,4 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
       {children}
     </CheckListContext.Provider>
   );
-};
-
-export const useCheckContext = () => {
-  const context = useContext(CheckListContext);
-
-  if (!context) {
-    throw new Error('useCheckContext deve ser usado dentro de um AuthProvider');
-  }
-
-  return context;
 };

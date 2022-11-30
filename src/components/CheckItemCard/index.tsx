@@ -6,6 +6,8 @@ import {
   CityName,
   CityTitle,
   Container,
+  DateName,
+  DateTitle,
   DeleteButtonContainer,
   DeleteIcon,
   DeleteText,
@@ -36,6 +38,10 @@ export const CheckItemCard: React.FC<ICheckItemCardProps> = ({ item }) => {
         <CityTitle>
           City: <CityName>{item.farmer.city}</CityName>
         </CityTitle>
+        <DateTitle>
+          Created at:{' '}
+          <DateName>{new Date(item.created_at).toDateString()}</DateName>
+        </DateTitle>
       </DetailsContainer>
       <ButtonsContainer>
         <EditButtonContainer>
