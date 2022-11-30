@@ -1,12 +1,9 @@
-import styled from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { FlatList } from 'react-native';
-import { ICheckItem } from '../../models/CheckItem';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import styled from 'styled-components/native';
+import { Ionicons } from '@expo/vector-icons';
 
 export const Container = styled.View`
   flex: 1;
-  align-items: center;
   background-color: ${({ theme }) => theme.colors.light};
   padding: 0 ${RFValue(16)}px;
 `;
@@ -16,6 +13,7 @@ export const HeaderContainer = styled.View`
   margin-bottom: ${RFValue(12)}px;
   width: 100%;
   position: relative;
+  align-items: center;
 `;
 
 export const Title = styled.Text`
@@ -26,26 +24,18 @@ export const Title = styled.Text`
   text-align: center;
 `;
 
-export const CheckList = styled(FlatList<ICheckItem>).attrs({
-  contentContainerStyle: {
-    paddingTop: 16,
-  },
-})``;
-
-export const LoadingContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const AddButton = styled.TouchableOpacity`
+export const BackButton = styled.TouchableOpacity`
   margin-left: auto;
   position: absolute;
-  right: ${RFValue(18)}px;
+  left: ${RFValue(18)}px;
   background-color: ${({ theme }) => theme.colors.light}; ;
 `;
 
-export const AddButtonIcon = styled(MaterialCommunityIcons)`
+export const BackButtonIcon = styled(Ionicons)`
   color: ${({ theme }) => theme.colors.primary};
-  font-size: ${RFValue(32)}px;
+  font-size: ${RFValue(28)}px;
+`;
+
+export const FormContainer = styled.View`
+  margin-top: ${RFValue(10)}px;
 `;

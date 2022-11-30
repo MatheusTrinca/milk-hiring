@@ -1,13 +1,12 @@
 import { Text, View } from 'react-native';
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
+import { Container } from './styles';
 
 export const EditScreen: React.FC = () => {
-  const { params } = useRoute();
-
   return (
-    <View>
+    <Container>
       <Text>Edit Screen</Text>
-    </View>
+    </Container>
   );
 };

@@ -13,9 +13,13 @@ import { ActivityIndicator, Alert, ListRenderItem } from 'react-native';
 import { CheckItemCard } from '../../components/CheckItemCard';
 import { useCheckListContext } from '../../hooks/useCheckListContext';
 import theme from '../../global/styles/theme';
+import { useNavigation } from '@react-navigation/native';
+import { CreateScreenNavigationProp } from '../../routes/app.routes';
 
 export const HomeScreen: React.FC = () => {
   const { checkListItems, loading, error } = useCheckListContext();
+
+  const navigation = useNavigation<CreateScreenNavigationProp>();
 
   const renderCheckListItem: ListRenderItem<ICheckItem> = ({ item }) => {
     return <CheckItemCard item={item} />;
@@ -37,7 +41,7 @@ export const HomeScreen: React.FC = () => {
     <Container>
       <HeaderContainer>
         <Title>Your Checklists</Title>
-        <AddButton>
+        <AddButton onPress={() => navigation.navigate('CreateScreen')}>
           <AddButtonIcon name="text-box-plus-outline" />
         </AddButton>
       </HeaderContainer>
