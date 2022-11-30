@@ -1,6 +1,6 @@
 export interface ICheckItem {
   _id: number;
-  type: string;
+  type: 'Antibiótico' | 'BPA' | 'BPF';
   amount_of_milk_produced: string;
   farmer: {
     name: string;
