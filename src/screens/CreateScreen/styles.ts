@@ -30,7 +30,7 @@ export const BackButton = styled.TouchableOpacity`
   margin-left: auto;
   position: absolute;
   left: ${RFValue(18)}px;
-  background-color: ${({ theme }) => theme.colors.light}; ;
+  background-color: ${({ theme }) => theme.colors.light};
 `;
 
 export const BackButtonIcon = styled(Ionicons)`
@@ -40,9 +40,7 @@ export const BackButtonIcon = styled(Ionicons)`
 
 export const FormContainer = styled.View``;
 
-export const SelectorContainer = styled.View`
-  margin-bottom: ${RFValue(10)}px;
-`;
+export const SelectorContainer = styled.View``;
 
 export const SelectorLabel = styled.Text`
   font-family: ${({ theme }) => theme.fonts.medium};
@@ -51,4 +49,18 @@ export const SelectorLabel = styled.Text`
   margin-bottom: ${RFValue(2)}px;
 `;
 
-export const Selector = styled(DropDownPicker)``;
+export const SelectorOptions = styled.View`
+  flex-direction: row;
+  margin: ${RFValue(12)}px ${RFValue(4)}px;
+`;
+
+export const Option = styled.View`
+  flex-direction: row;
+  margin-right: ${RFValue(24)}px;
+`;
+
+export const OptionLabel = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-size: ${RFValue(16)}px;
+  margin-left: ${RFValue(4)}px;
+`;

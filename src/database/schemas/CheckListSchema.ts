@@ -1,6 +1,6 @@
 export type CheckListType = {
   _id: number;
-  type: 'Antibiótico' | 'BPA' | 'BPF';
+  type: string;
   amount_of_milk_produced: string;
   farmerName: string;
   farmerCity: string;
@@ -10,8 +10,8 @@ export type CheckListType = {
   had_supervision: boolean;
   latitude: number;
   longitude: number;
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date;
   __v: number;
 };
 

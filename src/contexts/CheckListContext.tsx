@@ -17,9 +17,7 @@ interface ICheckContext {
   connectionStatus: string;
   checkListItem: ICheckItem;
   fetchCheckList: (id: number) => Promise<void>;
-  createCheckList: (
-    checkList: Omit<ICheckItem, '_id' | '__v'>
-  ) => Promise<void>;
+  createCheckList: (checkList: CheckListType) => Promise<void>;
 }
 
 export const CheckListContext = createContext<ICheckContext>(
@@ -128,19 +126,13 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     }
   };
 
-  // If connection status is healthy it saves to API and saves in Realms's CheckListItem
-  // If connection statyus is unhealthy it saves to Realms's CheckListItem and CheckListSync
-  const createCheckList = async (
-    checkList: Omit<ICheckItem, '_id' | '__v'>
-  ) => {
+  const createCheckList = async (checkList: CheckListType) => {
     const realm = await getRealm();
     try {
       setLoading(true);
-      if (connectionStatus === 'healthy') {
-        const id = await api.post('/checkList', checkList);
-        console.log(id);
-      } else {
-      }
+      realm.write(() => {
+        realm.create('CheckList', checkList);
+      });
     } catch (err) {
       console.error(err);
       setError(new Error(err as string));

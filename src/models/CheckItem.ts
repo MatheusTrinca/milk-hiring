@@ -1,6 +1,6 @@
 export interface ICheckItem {
-  _id: number;
-  type: 'Antibiótico' | 'BPA' | 'BPF';
+  _id?: number;
+  type: string;
   amount_of_milk_produced: string;
   farmer: {
     name: string;
@@ -18,7 +18,7 @@ export interface ICheckItem {
     latitude: number;
     longitude: number;
   };
-  created_at: string;
-  updated_at: string;
+  created_at: Date;
+  updated_at: Date;
   __v: number;
 }

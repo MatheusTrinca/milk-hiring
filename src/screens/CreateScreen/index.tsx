@@ -8,13 +8,22 @@ import {
   Title,
   SelectorContainer,
   SelectorLabel,
-  Selector,
+  SelectorOptions,
+  OptionLabel,
+  Option,
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from '../../components/TextInput';
-import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { MainButton } from '../../components/MainButton';
 import { useCheckListContext } from '../../hooks/useCheckListContext';
+import Checkbox from 'expo-checkbox';
+import theme from '../../global/styles/theme';
 
 export const CreateScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -28,70 +37,43 @@ export const CreateScreen: React.FC = () => {
   const [cowsHead, setCowsHead] = useState('');
   const [supervisorName, setSupervisorName] = useState('');
 
-  // CheckList Type DropDown States
-  const [openTypeDropDown, setOpenTypeDropDown] = useState(false);
-  const [type, setType] = useState(null);
-  const [types, setTypes] = useState([
-    { label: 'BPA', value: 'BPA' },
-    { label: 'Antibiótico', value: 'Antibiótico' },
-    { label: 'BPF', value: 'BPF' },
-  ]);
-
-  // CheckBox hasSupervisor
-  const [openHadSupervisionDropDown, setOpenHadSupervisionDropDown] =
-    useState(false);
-  const [hadSupervision, setHadSupervision] = useState({
-    label: '',
-    value: null,
-  });
-  const [hadSupervisionItems, setHadSupervisionItems] = useState([
-    { label: 'Yes', value: true },
-    { label: 'No', value: false },
-  ]);
-
-  console.log(hadSupervision);
+  const [typeChecked, setTypeChecked] = useState('Antibiótico');
+  const [hadSupervisorChecked, setHadSupervisorChecked] =
+    useState<boolean>(false);
 
   const handleSubmit = () => {
     if (
       farmerName.length === 0 ||
       farmName.length === 0 ||
       farmCity.length === 0 ||
-      type === null ||
+      typeChecked.length === 0 ||
       milkAmount.length === 0 ||
-      cowsHead.length === 0 ||
-      hadSupervision === null
+      cowsHead.length === 0
     ) {
       return Alert.alert(
         'Milk Hiring Error',
         'Please fill all form the fields'
       );
     }
-    if (type !== null && hadSupervision !== null) {
-      const data = {
-        type: type,
-        amount_of_milk_produced: milkAmount,
-        farmer: {
-          name: farmName,
-          city: farmCity,
-        },
-        from: {
-          name: farmerName,
-        },
-        to: {
-          name: '',
-        },
-        number_of_cows_head: cowsHead,
-        had_supervision: hadSupervision.value,
-        location: {
-          latitude: 0,
-          longitude: 0,
-        },
-        created_at: new Date(),
-        updated_at: new Date(),
-      };
 
-      createCheckList(data);
-    }
+    const data = {
+      _id: Date.now(),
+      type: typeChecked,
+      amount_of_milk_produced: milkAmount,
+      farmerName: farmName,
+      farmerCity: farmCity,
+      from: farmerName,
+      to: supervisorName,
+      number_of_cows_head: cowsHead,
+      had_supervision: hadSupervisorChecked,
+      latitude: 0,
+      longitude: 0,
+      created_at: new Date(),
+      updated_at: new Date(),
+      __v: 0,
+    };
+
+    createCheckList(data);
   };
 
   return (
@@ -99,62 +81,133 @@ export const CreateScreen: React.FC = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <Container>
-        <HeaderContainer>
-          <Title>Create Checklist</Title>
-          <BackButton onPress={() => navigation.goBack()}>
-            <BackButtonIcon name="arrow-back-outline" />
-          </BackButton>
-        </HeaderContainer>
-        <FormContainer>
-          <TextInput
-            label="Farm Name"
-            value={farmName}
-            onChangeText={setFarmName}
-          />
-          <TextInput
-            label="Farmer Name"
-            value={farmerName}
-            onChangeText={setFarmerName}
-          />
-          <TextInput label="City" value={farmCity} onChangeText={setFarmCity} />
-          <SelectorContainer>
-            <SelectorLabel>Type</SelectorLabel>
-            <Selector
-              open={openTypeDropDown}
-              value={type}
-              items={types}
-              setOpen={setOpenTypeDropDown}
-              setValue={setType}
-              setItems={setTypes}
+      <ScrollView>
+        <Container>
+          <HeaderContainer>
+            <Title>Create Checklist</Title>
+            <BackButton onPress={() => navigation.goBack()}>
+              <BackButtonIcon name="arrow-back-outline" />
+            </BackButton>
+          </HeaderContainer>
+          <FormContainer>
+            <TextInput
+              label="Farm Name"
+              value={farmName}
+              onChangeText={setFarmName}
             />
-          </SelectorContainer>
-          <TextInput
-            label="Amount of Milk Produced"
-            value={milkAmount}
-            onChangeText={setMilkAmount}
-            keyboardType="number-pad"
-          />
-          <TextInput
-            label="Number of Cows Head"
-            value={cowsHead}
-            onChangeText={setCowsHead}
-            keyboardType="number-pad"
-          />
-          <SelectorContainer>
-            <SelectorLabel>Had Supervision</SelectorLabel>
-            <Selector
-              open={openHadSupervisionDropDown}
-              value={hadSupervision}
-              items={hadSupervisionItems}
-              setOpen={setOpenHadSupervisionDropDown}
-              setValue={setHadSupervision}
-              setItems={setHadSupervisionItems}
+            <TextInput
+              label="Farmer Name"
+              value={farmerName}
+              onChangeText={setFarmerName}
             />
-          </SelectorContainer>
-          <MainButton onPress={handleSubmit} title="Add Checklist" />
-        </FormContainer>
-      </Container>
+            <TextInput
+              label="City"
+              value={farmCity}
+              onChangeText={setFarmCity}
+            />
+            <SelectorContainer>
+              <SelectorLabel>Type</SelectorLabel>
+              <SelectorOptions>
+                <Option>
+                  <Checkbox
+                    value={typeChecked === 'Antibiótico' ? true : false}
+                    onValueChange={() =>
+                      typeChecked === 'Antibiótico'
+                        ? setTypeChecked('')
+                        : setTypeChecked('Antibiótico')
+                    }
+                    color={
+                      typeChecked === 'Antibiótico'
+                        ? theme.colors.primary
+                        : undefined
+                    }
+                  />
+                  <OptionLabel>Antibiótico</OptionLabel>
+                </Option>
+                <Option>
+                  <Checkbox
+                    value={typeChecked === 'BPA' ? true : false}
+                    onValueChange={() =>
+                      typeChecked === 'BPA'
+                        ? setTypeChecked('')
+                        : setTypeChecked('BPA')
+                    }
+                    color={
+                      typeChecked === 'BPA' ? theme.colors.primary : undefined
+                    }
+                  />
+                  <OptionLabel>BPA</OptionLabel>
+                </Option>
+                <Option>
+                  <Checkbox
+                    value={typeChecked === 'BPF' ? true : false}
+                    onValueChange={() =>
+                      typeChecked === 'BPF'
+                        ? setTypeChecked('')
+                        : setTypeChecked('BPF')
+                    }
+                    color={
+                      typeChecked === 'BPF' ? theme.colors.primary : undefined
+                    }
+                  />
+                  <OptionLabel>BPF</OptionLabel>
+                </Option>
+              </SelectorOptions>
+            </SelectorContainer>
+            <TextInput
+              label="Amount of Milk Produced"
+              value={milkAmount}
+              onChangeText={setMilkAmount}
+              keyboardType="number-pad"
+            />
+            <TextInput
+              label="Number of Cows Head"
+              value={cowsHead}
+              onChangeText={setCowsHead}
+              keyboardType="number-pad"
+            />
+            <SelectorContainer>
+              <SelectorLabel>Had Supervision</SelectorLabel>
+              <SelectorOptions>
+                <Option>
+                  <Checkbox
+                    value={hadSupervisorChecked}
+                    onValueChange={() =>
+                      setHadSupervisorChecked(!hadSupervisorChecked)
+                    }
+                    color={
+                      hadSupervisorChecked ? theme.colors.primary : undefined
+                    }
+                  />
+                  <OptionLabel>YES</OptionLabel>
+                </Option>
+                <Option>
+                  <Checkbox
+                    value={!hadSupervisorChecked}
+                    onValueChange={() =>
+                      setHadSupervisorChecked(!hadSupervisorChecked)
+                    }
+                    color={
+                      hadSupervisorChecked
+                        ? theme.colors.primary
+                        : theme.colors.primary
+                    }
+                  />
+                  <OptionLabel>NO</OptionLabel>
+                </Option>
+              </SelectorOptions>
+            </SelectorContainer>
+            {hadSupervisorChecked && (
+              <TextInput
+                label="Supervisor Name"
+                value={supervisorName}
+                onChangeText={setSupervisorName}
+              />
+            )}
+            <MainButton onPress={handleSubmit} title="Add Checklist" />
+          </FormContainer>
+        </Container>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
