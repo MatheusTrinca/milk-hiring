@@ -1,16 +1,10 @@
-import { View, Text, Alert } from 'react-native';
-import React, {
-  useCallback,
-  createContext,
-  useState,
-  useContext,
-  useEffect,
-} from 'react';
+import { Alert } from 'react-native';
+import React, { useCallback, createContext, useState, useEffect } from 'react';
 import { ICheckItem } from '../models/CheckItem';
 import { api, connStatus } from '../services/api';
 import { getRealm } from '../database/realm';
 import { CheckListType } from '../database/schemas/CheckListSchema';
-import { formatFromRealm } from '../utils/formatData';
+import { formatFromRealm, formatDataToRealm } from '../utils/formatData';
 
 interface IProps {
   children: React.ReactElement;
@@ -22,8 +16,6 @@ interface ICheckContext {
   error: Error | null;
   connectionStatus: string;
 }
-
-type CheckListArray = {};
 
 export const CheckListContext = createContext<ICheckContext>(
   {} as ICheckContext
@@ -79,19 +71,7 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
           realm.write(() => {
             realm.create('CheckList', {
               _id: item._id || +Date.now(),
-              type: item.type,
-              amount_of_milk_produced: item.amount_of_milk_produced,
-              farmerName: item.farmer.name,
-              farmerCity: item.farmer.city,
-              from: item.from.name,
-              to: item.to.name,
-              number_of_cows_head: item.number_of_cows_head,
-              had_supervision: item.had_supervision,
-              latitude: item.location.latitude,
-              longitude: item.location.longitude,
-              created_at: item.created_at,
-              updated_at: item.updated_at,
-              __v: item.__v,
+              ...formatDataToRealm(item),
             });
           });
         });
