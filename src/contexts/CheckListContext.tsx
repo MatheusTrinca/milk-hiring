@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import React, {
   useCallback,
   createContext,
@@ -7,7 +7,10 @@ import React, {
   useEffect,
 } from 'react';
 import { ICheckItem } from '../models/CheckItem';
-import { api } from '../services/api';
+import { api, connStatus } from '../services/api';
+import { getRealm } from '../database/realm';
+import { CheckListType } from '../database/schemas/CheckListSchema';
+import { formatFromRealm } from '../utils/formatData';
 
 interface IProps {
   children: React.ReactElement;
@@ -17,7 +20,10 @@ interface ICheckContext {
   checkListItems: ICheckItem[];
   loading: boolean;
   error: Error | null;
+  connectionStatus: string;
 }
+
+type CheckListArray = {};
 
 export const CheckListContext = createContext<ICheckContext>(
   {} as ICheckContext
@@ -27,28 +33,112 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
   const [checkListItems, setCheckListItems] = useState<ICheckItem[]>(
     [] as ICheckItem[]
   );
+  const [connectionStatus, setConnectionStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    fetchCheckListItems();
+    checkConnectionHealthy();
   }, []);
 
-  const fetchCheckListItems = useCallback(async () => {
-    setLoading(true);
+  useEffect(() => {
+    if (connectionStatus === 'healthy') {
+      fetchCheckListItems();
+    } else {
+      fetchCheckListFromRealm();
+    }
+  }, [connectionStatus]);
+
+  const checkConnectionHealthy = useCallback(async () => {
     try {
-      const { data } = await api.get('/checkList');
-      setCheckListItems(data);
-      setLoading(false);
+      const { data } = await connStatus.get('/');
+      if (data) {
+        setConnectionStatus(data.status);
+      }
     } catch (err) {
-      console.error(err);
-      setLoading(false);
-      setError(new Error(err as string));
+      Alert.alert(
+        'Milk Hiring',
+        'You seems to not have an internet connection, using offline mode'
+      );
     }
   }, []);
 
+  // This function runs when connection status is healthy, destroying old RealmData and saving with new
+  const fetchCheckListItems = async () => {
+    const realm = await getRealm();
+    console.log(connectionStatus);
+    try {
+      setLoading(true);
+      const { data } = await api.get('/checkList');
+      if (data) {
+        setCheckListItems(data);
+        realm.write(() => {
+          realm.deleteAll();
+        });
+        data.forEach((item: ICheckItem) => {
+          realm.write(() => {
+            realm.create('CheckList', {
+              _id: item._id || +Date.now(),
+              type: item.type,
+              amount_of_milk_produced: item.amount_of_milk_produced,
+              farmerName: item.farmer.name,
+              farmerCity: item.farmer.city,
+              from: item.from.name,
+              to: item.to.name,
+              number_of_cows_head: item.number_of_cows_head,
+              had_supervision: item.had_supervision,
+              latitude: item.location.latitude,
+              longitude: item.location.longitude,
+              created_at: item.created_at,
+              updated_at: item.updated_at,
+              __v: item.__v,
+            });
+          });
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      setError(new Error(err as string));
+    } finally {
+      setLoading(false);
+      realm.close();
+    }
+  };
+
+  // This function runs when we connection status is unhealthy
+  const fetchCheckListFromRealm = async () => {
+    const realm = await getRealm();
+    const response = realm.objects('CheckList').toJSON();
+    const formatted = response.map(item =>
+      formatFromRealm(item as CheckListType)
+    );
+    setCheckListItems(formatted);
+  };
+
+  const createCheckList = async (
+    checkList: Omit<ICheckItem, '_id' | '__v'>
+  ) => {
+    if (connectionStatus === 'healthy') {
+      try {
+        setLoading(true);
+        await api.post('/checkList', checkList);
+      } catch (err) {
+        console.error(err);
+        setError(new Error(err as string));
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+  const syncronyzeDatabase = useCallback(async () => {
+    // Trazer os dados do RealmDB
+    // Fazer um post desses dados na api
+  }, []);
+
   return (
-    <CheckListContext.Provider value={{ checkListItems, loading, error }}>
+    <CheckListContext.Provider
+      value={{ checkListItems, loading, error, connectionStatus }}
+    >
       {children}
     </CheckListContext.Provider>
   );
