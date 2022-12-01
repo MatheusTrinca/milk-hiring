@@ -67,3 +67,9 @@ export const Supervision = styled.Text<{ hadSupervision: boolean }>`
       ? props.theme.colors.success
       : props.theme.colors.danger};
 `;
+
+export const LoadingContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

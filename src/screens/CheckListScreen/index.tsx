@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { formatDistance, subDays } from 'date-fns';
-import item from '../../assets/data/checklist.json';
-import { ICheckItem } from '../../models/CheckItem';
 import {
   BackButton,
   BackButtonIcon,
@@ -14,17 +12,29 @@ import {
   LabelItem,
   Supervision,
   Type,
+  LoadingContainer,
 } from './styles';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { useCheckListContext } from '../../hooks/useCheckListContext';
+import { HomeStackParamList } from '../../routes/app.routes';
+import { Alert } from 'react-native';
 
-interface ICheckItemProps {
-  checklist: ICheckItem;
-}
-
-export const CheckListScreen: React.FC<ICheckItemProps> = ({
-  checklist = item,
-}) => {
+export const CheckListScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { params } =
+    useRoute<RouteProp<HomeStackParamList, 'CheckListScreen'>>();
+
+  const { checkListItems, error } = useCheckListContext();
+
+  const checkListItem = checkListItems.find(item => item._id === params.itemId);
+
+  if (error) {
+    return <>{Alert.alert('Error Fetching Data')}</>;
+  }
+
+  if (!checkListItem) {
+    return <LoadingContainer />;
+  }
 
   return (
     <Container>
@@ -33,47 +43,49 @@ export const CheckListScreen: React.FC<ICheckItemProps> = ({
           <BackButtonIcon name="arrow-back-outline" />
         </BackButton>
       </HeaderContainer>
-      <FarmName>{checklist.farmer.name}</FarmName>
-      <FarmCity>{checklist.farmer.city}</FarmCity>
+      <FarmName>{checkListItem?.farmer.name}</FarmName>
+      <FarmCity>{checkListItem?.farmer.city}</FarmCity>
       <InfoContainer>
         <Label>
           Typo:{' '}
-          <Type options={checklist.type as 'Antibiótico' | 'BPA' | 'BPF'}>
-            {checklist.type}
+          <Type options={checkListItem?.type as 'Antibiótico' | 'BPA' | 'BPF'}>
+            {checkListItem?.type}
           </Type>
         </Label>
         <Label>
-          Farmer: <LabelItem>{checklist.from.name}</LabelItem>
+          Farmer: <LabelItem>{checkListItem?.from.name}</LabelItem>
         </Label>
-        {checklist.to.name && (
+        {checkListItem?.to.name && (
           <Label>
-            Supervisor: <LabelItem>{checklist.to.name}</LabelItem>
+            Supervisor: <LabelItem>{checkListItem?.to.name}</LabelItem>
           </Label>
         )}
         <Label>
           Amount of Milk Produced:{' '}
-          <LabelItem>{checklist.amount_of_milk_produced}</LabelItem>
+          <LabelItem>{checkListItem?.amount_of_milk_produced}</LabelItem>
         </Label>
         <Label>
           Number of Cows Head:{' '}
-          <LabelItem>{checklist.amount_of_milk_produced}</LabelItem>
+          <LabelItem>{checkListItem?.amount_of_milk_produced}</LabelItem>
         </Label>
       </InfoContainer>
       <Label>
         Had Supervision:{' '}
-        <Supervision hadSupervision={checklist.had_supervision}>
-          {checklist.had_supervision ? 'Yes' : 'No'}
+        <Supervision hadSupervision={checkListItem?.had_supervision}>
+          {checkListItem?.had_supervision ? 'Yes' : 'No'}
         </Supervision>
       </Label>
       <Label>
         Created At:{' '}
-        <LabelItem>{new Date(checklist.created_at).toDateString()}</LabelItem>
+        <LabelItem>
+          {new Date(checkListItem?.created_at).toDateString()}
+        </LabelItem>
       </Label>
       <Label>
         Last Update:{' '}
         <LabelItem>
           {formatDistance(
-            subDays(new Date(checklist.updated_at), 3),
+            subDays(new Date(checkListItem?.updated_at), 3),
             new Date(),
             { addSuffix: true }
           )}

@@ -14,15 +14,19 @@ import { useNavigation } from '@react-navigation/native';
 import { TextInput } from '../../components/TextInput';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { MainButton } from '../../components/MainButton';
+import { useCheckListContext } from '../../hooks/useCheckListContext';
 
 export const CreateScreen: React.FC = () => {
   const navigation = useNavigation();
+
+  const { createCheckList } = useCheckListContext();
 
   const [farmName, setFarmName] = useState('');
   const [farmerName, setFarmerName] = useState('');
   const [farmCity, setFarmCity] = useState('');
   const [milkAmount, setMilkAmount] = useState('');
   const [cowsHead, setCowsHead] = useState('');
+  const [supervisorName, setSupervisorName] = useState('');
 
   // CheckList Type DropDown States
   const [openTypeDropDown, setOpenTypeDropDown] = useState(false);
@@ -36,11 +40,16 @@ export const CreateScreen: React.FC = () => {
   // CheckBox hasSupervisor
   const [openHadSupervisionDropDown, setOpenHadSupervisionDropDown] =
     useState(false);
-  const [hadSupervision, setHadSupervision] = useState(null);
+  const [hadSupervision, setHadSupervision] = useState({
+    label: '',
+    value: null,
+  });
   const [hadSupervisionItems, setHadSupervisionItems] = useState([
     { label: 'Yes', value: true },
     { label: 'No', value: false },
   ]);
+
+  console.log(hadSupervision);
 
   const handleSubmit = () => {
     if (
@@ -56,6 +65,32 @@ export const CreateScreen: React.FC = () => {
         'Milk Hiring Error',
         'Please fill all form the fields'
       );
+    }
+    if (type !== null && hadSupervision !== null) {
+      const data = {
+        type: type,
+        amount_of_milk_produced: milkAmount,
+        farmer: {
+          name: farmName,
+          city: farmCity,
+        },
+        from: {
+          name: farmerName,
+        },
+        to: {
+          name: '',
+        },
+        number_of_cows_head: cowsHead,
+        had_supervision: hadSupervision.value,
+        location: {
+          latitude: 0,
+          longitude: 0,
+        },
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+
+      createCheckList(data);
     }
   };
 

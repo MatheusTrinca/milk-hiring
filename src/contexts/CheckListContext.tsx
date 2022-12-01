@@ -15,8 +15,11 @@ interface ICheckContext {
   loading: boolean;
   error: Error | null;
   connectionStatus: string;
-  fetchCheckList: (id: number) => Promise<void>;
   checkListItem: ICheckItem;
+  fetchCheckList: (id: number) => Promise<void>;
+  createCheckList: (
+    checkList: Omit<ICheckItem, '_id' | '__v'>
+  ) => Promise<void>;
 }
 
 export const CheckListContext = createContext<ICheckContext>(
@@ -114,34 +117,40 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
 
   const fetchCheckList = async (id: number) => {
     try {
+      const data = checkListItems.find(item => item._id === id);
+      if (data) {
+        return setCheckListItem(data);
+      }
+      throw new Error('CheckList not found');
+    } catch (err) {
+      console.error(err);
+      setError(new Error(err as string));
+    }
+  };
+
+  // If connection status is healthy it saves to API and saves in Realms's CheckListItem
+  // If connection statyus is unhealthy it saves to Realms's CheckListItem and CheckListSync
+  const createCheckList = async (
+    checkList: Omit<ICheckItem, '_id' | '__v'>
+  ) => {
+    const realm = await getRealm();
+    try {
       setLoading(true);
       if (connectionStatus === 'healthy') {
-        const { data } = await api.get(`/checkList/${id}`);
-        console.log(data);
-        setCheckListItem(data);
+        const id = await api.post('/checkList', checkList);
+        console.log(id);
       } else {
       }
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
+      setError(new Error(err as string));
     } finally {
       setLoading(false);
     }
   };
 
-  // const createCheckList = async (
-  //   checkList: Omit<ICheckItem, '_id' | '__v'>
-  // ) => {
-  //   if (connectionStatus === 'healthy') {
-  //     try {
-  //       setLoading(true);
-  //       await api.post('/checkList', checkList);
-  //     } catch (err) {
-  //       console.error(err);
-  //       setError(new Error(err as string));
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
+  // This gets the data from CheckListSync and send to the API syncing
+  // After syncing, all CheckListSync data is deleted
   // const syncronyzeDatabase = useCallback(async () => {
   //   // Trazer os dados do RealmDB
   //   // Fazer um post desses dados na api
@@ -154,8 +163,9 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
         loading,
         error,
         connectionStatus,
-        fetchCheckList,
         checkListItem,
+        fetchCheckList,
+        createCheckList,
       }}
     >
       {children}

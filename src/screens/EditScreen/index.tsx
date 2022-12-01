@@ -9,6 +9,7 @@ import {
   SelectorContainer,
   SelectorLabel,
   Selector,
+  LoadingContainer,
 } from './styles';
 import { TextInput } from '../../components/TextInput';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -19,13 +20,11 @@ import { HomeStackParamList } from '../../routes/app.routes';
 
 export const EditScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { checkListItems } = useCheckListContext();
+  const { checkListItems, error } = useCheckListContext();
 
-  const route = useRoute<RouteProp<HomeStackParamList, 'EditScreen'>>();
+  const { params } = useRoute<RouteProp<HomeStackParamList, 'EditScreen'>>();
 
-  const checkListItem = checkListItems.find(
-    item => item._id === route.params.itemId
-  );
+  const checkListItem = checkListItems.find(item => item._id === params.itemId);
 
   const [farmName, setFarmName] = useState(checkListItem?.farmer?.name || '');
   const [farmerName, setFarmerName] = useState(checkListItem?.from?.name || '');
@@ -81,6 +80,14 @@ export const EditScreen: React.FC = () => {
       );
     }
   };
+
+  if (error) {
+    return <>{Alert.alert('Error Fetching Data')}</>;
+  }
+
+  if (!checkListItem) {
+    return <LoadingContainer />;
+  }
 
   return (
     <KeyboardAvoidingView
