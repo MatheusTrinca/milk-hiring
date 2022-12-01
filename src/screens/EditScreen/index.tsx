@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   BackButton,
   BackButtonIcon,
@@ -9,24 +9,17 @@ import {
   SelectorContainer,
   SelectorLabel,
   Selector,
-  LoadingContainer,
 } from './styles';
 import { TextInput } from '../../components/TextInput';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import {
-  ActivityIndicator,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { MainButton } from '../../components/MainButton';
 import { useCheckListContext } from '../../hooks/useCheckListContext';
 import { HomeStackParamList } from '../../routes/app.routes';
-import theme from '../../global/styles/theme';
 
 export const EditScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { checkListItems, error, loading } = useCheckListContext();
+  const { checkListItems } = useCheckListContext();
 
   const route = useRoute<RouteProp<HomeStackParamList, 'EditScreen'>>();
 
