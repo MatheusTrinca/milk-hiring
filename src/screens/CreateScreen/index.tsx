@@ -19,6 +19,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { MainButton } from '../../components/MainButton';
+import { ICheckItem } from '../../models/CheckItem';
 
 export const CreateScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -57,7 +58,10 @@ export const CreateScreen: React.FC = () => {
       cowsHead.length === 0 ||
       hadSupervision === null
     ) {
-      Alert.alert('Milk Hiring Error', 'Please fill all form the fields');
+      return Alert.alert(
+        'Milk Hiring Error',
+        'Please fill all form the fields'
+      );
     }
   };
 

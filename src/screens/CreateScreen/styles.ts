@@ -38,9 +38,7 @@ export const BackButtonIcon = styled(Ionicons)`
   font-size: ${RFValue(28)}px;
 `;
 
-export const FormContainer = styled.View`
-  margin-top: ${RFValue(10)}px;
-`;
+export const FormContainer = styled.View``;
 
 export const SelectorContainer = styled.View`
   margin-bottom: ${RFValue(10)}px;
