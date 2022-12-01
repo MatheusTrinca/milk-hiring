@@ -4,7 +4,11 @@ import { ICheckItem } from '../models/CheckItem';
 import { api, connStatus } from '../services/api';
 import { getRealm } from '../database/realm';
 import { CheckListType } from '../database/schemas/CheckListSchema';
-import { formatFromRealm, formatDataToRealm } from '../utils/formatData';
+import {
+  formatFromRealm,
+  formatDataToRealm,
+  formatArrayToSync,
+} from '../utils/formatData';
 
 interface IProps {
   children: React.ReactElement;
@@ -18,6 +22,7 @@ interface ICheckContext {
   checkListItem: ICheckItem;
   fetchCheckList: (id: number) => Promise<void>;
   createCheckList: (checkList: CheckListType) => Promise<void>;
+  updateCheckList: (checkList: ICheckItem, id: number) => Promise<void>;
 }
 
 export const CheckListContext = createContext<ICheckContext>(
@@ -44,6 +49,7 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
   useEffect(() => {
     console.log('Fetching Items');
     if (connectionStatus === 'healthy') {
+      // syncronyzeDatabase();
       fetchCheckListItems();
     } else {
       fetchCheckListFromRealm();
@@ -73,8 +79,9 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
       const { data } = await api.get('/checkList');
       if (data) {
         setCheckListItems(data);
+        const checkListsToDelete = realm.objects('CheckList');
         realm.write(() => {
-          realm.deleteAll();
+          realm.delete(checkListsToDelete);
         });
         data.forEach((item: ICheckItem) => {
           realm.write(() => {
@@ -130,23 +137,47 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     const realm = await getRealm();
     try {
       setLoading(true);
-      realm.write(() => {
-        realm.create('CheckList', checkList);
-      });
+      if (connectionStatus === 'healthy') {
+        const checkListItem = formatFromRealm(checkList);
+        await api.post('/checkList', formatArrayToSync([checkListItem]));
+      } else {
+        realm.write(() => {
+          realm.create('CheckList', checkList);
+        });
+      }
+      setCheckListItems(prevState => [
+        ...prevState,
+        formatFromRealm(checkList),
+      ]);
     } catch (err) {
       console.error(err);
       setError(new Error(err as string));
     } finally {
+      realm.close();
       setLoading(false);
     }
   };
 
-  // This gets the data from CheckListSync and send to the API syncing
-  // After syncing, all CheckListSync data is deleted
-  // const syncronyzeDatabase = useCallback(async () => {
-  //   // Trazer os dados do RealmDB
-  //   // Fazer um post desses dados na api
-  // }, []);
+  const updateCheckList = async (checkList: ICheckItem, id: number) => {
+    const realm = await getRealm();
+    try {
+      setLoading(true);
+      if (connectionStatus === 'healthy') {
+        await api.put(`/checkList/${id}`, formatArrayToSync([checkList]));
+      } else {
+        realm.write(() => {
+          realm.create('CheckList', formatDataToRealm(checkList));
+        });
+      }
+      setCheckListItems(prevState => [...prevState, checkList]);
+    } catch (err) {
+      console.error(err);
+      setError(new Error(err as string));
+    } finally {
+      realm.close();
+      setLoading(false);
+    }
+  };
 
   return (
     <CheckListContext.Provider
@@ -158,6 +189,7 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
         checkListItem,
         fetchCheckList,
         createCheckList,
+        updateCheckList,
       }}
     >
       {children}

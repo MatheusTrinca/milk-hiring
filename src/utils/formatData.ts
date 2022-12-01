@@ -1,7 +1,10 @@
 import { CheckListType } from '../database/schemas/CheckListSchema';
+import { CheckListSyncType } from '../database/schemas/CheckListSyncSchema';
 import { ICheckItem } from '../models/CheckItem';
 
-export const formatFromRealm = (data: CheckListType): ICheckItem => {
+export const formatFromRealm = (
+  data: CheckListType | CheckListSyncType
+): ICheckItem => {
   return {
     _id: data._id,
     type: data.type,
@@ -46,4 +49,32 @@ export const formatDataToRealm = (
     updated_at: data.updated_at,
     __v: data.__v,
   };
+};
+
+export const formatArrayToSync = (dataArr: ICheckItem[]) => {
+  const checklists = dataArr.map(item => ({
+    id: String(item._id) || String(Date.now()),
+    type: item.type,
+    amount_of_milk_produced: +item.amount_of_milk_produced,
+    number_of_cows_head: +item.number_of_cows_head,
+    had_supervision: item.had_supervision,
+    farmer: {
+      name: item.farmer.name,
+      city: item.farmer.city,
+    },
+    from: {
+      name: item.from.name,
+    },
+    to: {
+      name: item.to.name,
+    },
+    location: {
+      latitude: item.location.latitude,
+      longitude: item.location.longitude,
+    },
+    created_at: item.created_at,
+    updated_at: item.updated_at,
+  }));
+
+  return { checklists };
 };
