@@ -42,9 +42,7 @@ export const FormContainer = styled.View`
   margin-top: ${RFValue(10)}px;
 `;
 
-export const SelectorContainer = styled.View`
-  margin-bottom: ${RFValue(10)}px;
-`;
+export const SelectorContainer = styled.View``;
 
 export const SelectorLabel = styled.Text`
   font-family: ${({ theme }) => theme.fonts.medium};
@@ -54,3 +52,9 @@ export const SelectorLabel = styled.Text`
 `;
 
 export const Selector = styled(DropDownPicker)``;
+
+export const LoadingContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

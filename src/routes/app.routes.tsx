@@ -19,7 +19,7 @@ import theme from '../global/styles/theme';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { CheckListScreen } from '../screens/CheckListScreen';
 
-type HomeStackParamList = {
+export type HomeStackParamList = {
   HomeScreen: undefined;
   EditScreen: { itemId: number };
   CheckListScreen: { itemId: number };

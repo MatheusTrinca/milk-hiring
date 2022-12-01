@@ -12,20 +12,14 @@ import {
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from '../../components/TextInput';
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { MainButton } from '../../components/MainButton';
-import { ICheckItem } from '../../models/CheckItem';
 
 export const CreateScreen: React.FC = () => {
   const navigation = useNavigation();
 
-  const [farmerName, setFarmerName] = useState('');
   const [farmName, setFarmName] = useState('');
+  const [farmerName, setFarmerName] = useState('');
   const [farmCity, setFarmCity] = useState('');
   const [milkAmount, setMilkAmount] = useState('');
   const [cowsHead, setCowsHead] = useState('');
@@ -79,14 +73,14 @@ export const CreateScreen: React.FC = () => {
         </HeaderContainer>
         <FormContainer>
           <TextInput
-            label="Farmer Name"
-            value={farmerName}
-            onChangeText={setFarmerName}
-          />
-          <TextInput
             label="Farm Name"
             value={farmName}
             onChangeText={setFarmName}
+          />
+          <TextInput
+            label="Farmer Name"
+            value={farmerName}
+            onChangeText={setFarmerName}
           />
           <TextInput label="City" value={farmCity} onChangeText={setFarmCity} />
           <SelectorContainer>
