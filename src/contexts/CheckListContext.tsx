@@ -8,6 +8,7 @@ import {
   formatFromRealm,
   formatDataToRealm,
   formatArrayToSync,
+  formatToEdit,
 } from '../utils/formatData';
 
 interface IProps {
@@ -22,7 +23,7 @@ interface ICheckContext {
   checkListItem: ICheckItem;
   fetchCheckList: (id: number) => Promise<void>;
   createCheckList: (checkList: CheckListType) => Promise<void>;
-  updateCheckList: (checkList: ICheckItem, id: number) => Promise<void>;
+  updateCheckList: (checkList: CheckListType, id: number) => Promise<void>;
 }
 
 export const CheckListContext = createContext<ICheckContext>(
@@ -158,18 +159,24 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     }
   };
 
-  const updateCheckList = async (checkList: ICheckItem, id: number) => {
+  const updateCheckList = async (checkList: CheckListType, id: number) => {
     const realm = await getRealm();
     try {
       setLoading(true);
       if (connectionStatus === 'healthy') {
-        await api.put(`/checkList/${id}`, formatArrayToSync([checkList]));
+        const checkListItem = formatToEdit(checkList);
+        console.log(checkListItem);
+        await api.put(`/checkList/${id}`, checkListItem);
       } else {
         realm.write(() => {
-          realm.create('CheckList', formatDataToRealm(checkList));
+          realm.create('CheckList', checkList);
         });
       }
-      setCheckListItems(prevState => [...prevState, checkList]);
+      setCheckListItems(prevState =>
+        prevState.map(item =>
+          item._id === id ? formatFromRealm(checkList) : item
+        )
+      );
     } catch (err) {
       console.error(err);
       setError(new Error(err as string));

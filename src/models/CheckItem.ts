@@ -1,5 +1,5 @@
 export interface ICheckItem {
-  _id?: number;
+  _id: number;
   type: string;
   amount_of_milk_produced: string;
   farmer: {

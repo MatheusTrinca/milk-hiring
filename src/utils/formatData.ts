@@ -78,3 +78,28 @@ export const formatArrayToSync = (dataArr: ICheckItem[]) => {
 
   return { checklists };
 };
+
+export const formatToEdit = (data: CheckListType) => {
+  return {
+    type: data.type,
+    amount_of_milk_produced: +data.amount_of_milk_produced,
+    number_of_cows_head: +data.number_of_cows_head,
+    had_supervision: data.had_supervision,
+    farmer: {
+      name: data.farmerName,
+      city: data.farmerCity,
+    },
+    from: {
+      name: data.from,
+    },
+    to: {
+      name: data.to,
+    },
+    location: {
+      latitude: data.latitude,
+      longitude: data.longitude,
+    },
+    created_at: data.created_at,
+    updated_at: data.updated_at,
+  };
+};

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { formatDistance, subDays } from 'date-fns';
+import React from 'react';
 import {
   BackButton,
   BackButtonIcon,
@@ -84,11 +83,7 @@ export const CheckListScreen: React.FC = () => {
       <Label>
         Last Update:{' '}
         <LabelItem>
-          {formatDistance(
-            subDays(new Date(checkListItem?.updated_at), 3),
-            new Date(),
-            { addSuffix: true }
-          )}
+          {new Date(checkListItem?.updated_at).toDateString()}
         </LabelItem>
       </Label>
     </Container>
