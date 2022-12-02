@@ -23,6 +23,7 @@ import {
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { AppScreenNavigationProp } from '../../routes/app.routes';
+import { useCheckListContext } from '../../hooks/useCheckListContext';
 
 interface ICheckItemCardProps {
   item: ICheckItem;
@@ -31,8 +32,19 @@ interface ICheckItemCardProps {
 export const CheckItemCard: React.FC<ICheckItemCardProps> = ({ item }) => {
   const navigation = useNavigation<AppScreenNavigationProp>();
 
+  const { deleteCheckList } = useCheckListContext();
+
   const handleDelete = () => {
-    Alert.alert('Are you sure?');
+    Alert.alert('Delete items', 'Are you sure you want to delete?', [
+      {
+        text: 'YES',
+        onPress: () => deleteCheckList(item._id),
+      },
+      {
+        text: 'NO',
+        onPress: () => {},
+      },
+    ]);
   };
 
   const handleCheckList = () => {

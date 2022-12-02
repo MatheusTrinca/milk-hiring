@@ -24,10 +24,13 @@ import { MainButton } from '../../components/MainButton';
 import { useCheckListContext } from '../../hooks/useCheckListContext';
 import Checkbox from 'expo-checkbox';
 import theme from '../../global/styles/theme';
-import { HomeStackParamList } from '../../routes/app.routes';
+import {
+  AppScreenNavigationProp,
+  HomeStackParamList,
+} from '../../routes/app.routes';
 
 export const EditScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<AppScreenNavigationProp>();
 
   const { params } = useRoute<RouteProp<HomeStackParamList, 'EditScreen'>>();
 
@@ -89,6 +92,7 @@ export const EditScreen: React.FC = () => {
       };
 
       updateCheckList(data, data._id);
+      navigation.navigate('HomeScreen');
     }
   };
 
@@ -97,7 +101,7 @@ export const EditScreen: React.FC = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <Container>
           <HeaderContainer>
             <Title>Edit Checklist</Title>

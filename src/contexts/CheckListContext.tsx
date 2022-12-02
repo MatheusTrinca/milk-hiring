@@ -22,6 +22,7 @@ interface ICheckContext {
   connectionStatus: string;
   createCheckList: (checkList: CheckListType) => Promise<void>;
   updateCheckList: (checkList: CheckListType, id: number) => Promise<void>;
+  deleteCheckList: (id: number) => Promise<void>;
 }
 
 export const CheckListContext = createContext<ICheckContext>(
@@ -169,6 +170,27 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     }
   };
 
+  const deleteCheckList = async (id: number) => {
+    const realm = await getRealm();
+    try {
+      if (connectionStatus === 'healthy') {
+        await api.delete(`/checkList/${id}`);
+      } else {
+        const toDelete = realm.objects('CheckList').filtered(`_id = '${id}'`);
+        realm.write(() => {
+          realm.delete(toDelete);
+        });
+      }
+      setCheckListItems(prevState => prevState.filter(item => item._id !== id));
+    } catch (err) {
+      console.error(err);
+      setError(new Error(err as string));
+    } finally {
+      realm.close();
+      setLoading(false);
+    }
+  };
+
   return (
     <CheckListContext.Provider
       value={{
@@ -178,6 +200,7 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
         connectionStatus,
         createCheckList,
         updateCheckList,
+        deleteCheckList,
       }}
     >
       {children}

@@ -24,11 +24,12 @@ import { MainButton } from '../../components/MainButton';
 import { useCheckListContext } from '../../hooks/useCheckListContext';
 import Checkbox from 'expo-checkbox';
 import theme from '../../global/styles/theme';
+import { AppScreenNavigationProp } from '../../routes/app.routes';
 
 export const CreateScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<AppScreenNavigationProp>();
 
-  const { createCheckList } = useCheckListContext();
+  const { createCheckList, error } = useCheckListContext();
 
   const [farmName, setFarmName] = useState('');
   const [farmerName, setFarmerName] = useState('');
@@ -74,6 +75,7 @@ export const CreateScreen: React.FC = () => {
     };
 
     createCheckList(data);
+    navigation.navigate('HomeScreen');
   };
 
   return (
@@ -81,7 +83,7 @@ export const CreateScreen: React.FC = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1 }}
     >
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <Container>
           <HeaderContainer>
             <Title>Create Checklist</Title>
