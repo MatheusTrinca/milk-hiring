@@ -6,6 +6,11 @@
     "assetBundlePatterns": ["**/*"],
     "android": {
       "softwareKeyboardLayoutMode": "pan"
+    },
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#46a0cd",
+      "resizeMode": "contain"
     }
   }
 }
