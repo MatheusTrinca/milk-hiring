@@ -87,9 +87,6 @@ export const CreateScreen: React.FC = () => {
         <Container>
           <HeaderContainer>
             <Title>Create Checklist</Title>
-            <BackButton onPress={() => navigation.goBack()}>
-              <BackButtonIcon name="arrow-back-outline" />
-            </BackButton>
           </HeaderContainer>
           <FormContainer>
             <TextInput

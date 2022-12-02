@@ -18,6 +18,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import theme from '../global/styles/theme';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { CheckListScreen } from '../screens/CheckListScreen';
+import { ProfileScreen } from '../screens/ProfileScreen';
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
@@ -29,9 +30,14 @@ export type CreateStackParamList = {
   CreateScreen: undefined;
 };
 
+export type ProfileStackParamList = {
+  ProfileScreen: undefined;
+};
+
 type TabParamList = {
   Home: NavigatorScreenParams<HomeStackParamList>;
   Create: NavigatorScreenParams<CreateStackParamList>;
+  Profile: NavigatorScreenParams<ProfileStackParamList>;
 };
 
 export type AppScreenNavigationProp = CompositeNavigationProp<
@@ -44,13 +50,22 @@ export type CreateScreenNavigationProp = CompositeNavigationProp<
   NativeStackNavigationProp<CreateStackParamList>
 >;
 
+export type ProfileScreenNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabParamList>,
+  NativeStackNavigationProp<ProfileStackParamList>
+>;
+
 const Tab = createBottomTabNavigator<TabParamList>();
 const Home = createNativeStackNavigator<HomeStackParamList>();
 const Create = createNativeStackNavigator<CreateStackParamList>();
+const Profile = createNativeStackNavigator<ProfileStackParamList>();
 
 const HomeStack: React.FC = () => {
   return (
-    <Home.Navigator screenOptions={{ headerShown: false }}>
+    <Home.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="HomeScreen"
+    >
       <Home.Screen name="HomeScreen" component={HomeScreen} />
       <Home.Screen name="EditScreen" component={EditScreen} />
       <Home.Screen name="CheckListScreen" component={CheckListScreen} />
@@ -66,6 +81,14 @@ const CreateStack: React.FC = () => {
   );
 };
 
+const ProfileStack: React.FC = () => {
+  return (
+    <Profile.Navigator screenOptions={{ headerShown: false }}>
+      <Profile.Screen name="ProfileScreen" component={ProfileScreen} />
+    </Profile.Navigator>
+  );
+};
+
 export const AppRoutes: React.FC = () => {
   return (
     <Tab.Navigator
@@ -75,7 +98,11 @@ export const AppRoutes: React.FC = () => {
           return (
             <MaterialCommunityIcons
               name={
-                route.name === 'Home' ? 'home-outline' : 'text-box-plus-outline'
+                route.name === 'Home'
+                  ? 'home-outline'
+                  : route.name === 'Create'
+                  ? 'text-box-plus-outline'
+                  : 'account-details-outline'
               }
               size={size}
               color={color}
@@ -93,6 +120,7 @@ export const AppRoutes: React.FC = () => {
         component={CreateStack}
         options={{ unmountOnBlur: true }}
       />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 };
