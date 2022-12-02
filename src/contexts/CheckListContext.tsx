@@ -168,8 +168,10 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
         console.log(checkListItem);
         await api.put(`/checkList/${id}`, checkListItem);
       } else {
+        const toDelete = realm.objects('CheckList').filtered(`_id = '${id}'`);
+        console.log(toDelete);
         realm.write(() => {
-          // realm.delete(checkList);
+          realm.delete(toDelete);
           realm.create('CheckList', checkList);
         });
       }
