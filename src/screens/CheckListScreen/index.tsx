@@ -65,7 +65,7 @@ export const CheckListScreen: React.FC = () => {
         </Label>
         <Label>
           Number of Cows Head:{' '}
-          <LabelItem>{checkListItem?.amount_of_milk_produced}</LabelItem>
+          <LabelItem>{checkListItem?.number_of_cows_head}</LabelItem>
         </Label>
       </InfoContainer>
       <Label>

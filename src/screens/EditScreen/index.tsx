@@ -81,7 +81,7 @@ export const EditScreen: React.FC = () => {
         farmerName: farmName,
         farmerCity: farmCity,
         from: farmerName,
-        to: supervisorName,
+        to: !hadSupervisorChecked ? '' : supervisorName,
         number_of_cows_head: cowsHead,
         had_supervision: hadSupervisorChecked,
         latitude: checkListItem?.location.latitude,
