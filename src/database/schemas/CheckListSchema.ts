@@ -34,6 +34,4 @@ export const CheckListSchema = {
     updated_at: 'date',
     __v: 'int',
   },
-
-  primaryKey: '_id',
 };
