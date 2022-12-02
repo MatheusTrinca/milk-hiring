@@ -20,8 +20,6 @@ interface ICheckContext {
   loading: boolean;
   error: Error | null;
   connectionStatus: string;
-  checkListItem: ICheckItem;
-  fetchCheckList: (id: number) => Promise<void>;
   createCheckList: (checkList: CheckListType) => Promise<void>;
   updateCheckList: (checkList: CheckListType, id: number) => Promise<void>;
 }
@@ -37,10 +35,6 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
   const [connectionStatus, setConnectionStatus] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-
-  const [checkListItem, setCheckListItem] = useState<ICheckItem>(
-    {} as ICheckItem
-  );
 
   useEffect(() => {
     console.log('Checando Healthy');
@@ -121,19 +115,6 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     }
   };
 
-  const fetchCheckList = async (id: number) => {
-    try {
-      const data = checkListItems.find(item => item._id === id);
-      if (data) {
-        return setCheckListItem(data);
-      }
-      throw new Error('CheckList not found');
-    } catch (err) {
-      console.error(err);
-      setError(new Error(err as string));
-    }
-  };
-
   const createCheckList = async (checkList: CheckListType) => {
     const realm = await getRealm();
     try {
@@ -169,7 +150,6 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
         await api.put(`/checkList/${id}`, checkListItem);
       } else {
         const toDelete = realm.objects('CheckList').filtered(`_id = '${id}'`);
-        console.log(toDelete);
         realm.write(() => {
           realm.delete(toDelete);
           realm.create('CheckList', checkList);
@@ -196,8 +176,6 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
         loading,
         error,
         connectionStatus,
-        checkListItem,
-        fetchCheckList,
         createCheckList,
         updateCheckList,
       }}
