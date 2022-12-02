@@ -1,10 +1,8 @@
 import { CheckListType } from '../database/schemas/CheckListSchema';
-import { CheckListSyncType } from '../database/schemas/CheckListSyncSchema';
 import { ICheckItem } from '../models/CheckItem';
 
-export const formatFromRealm = (
-  data: CheckListType | CheckListSyncType
-): ICheckItem => {
+// This function format data from Realm to setCheckingListItems on Context
+export const formatFromRealm = (data: CheckListType): ICheckItem => {
   return {
     _id: data._id,
     type: data.type,
@@ -31,6 +29,7 @@ export const formatFromRealm = (
   };
 };
 
+// This function format Data to be stored in RealmDB
 export const formatDataToRealm = (
   data: ICheckItem
 ): Omit<CheckListType, '_id'> => {
@@ -51,6 +50,7 @@ export const formatDataToRealm = (
   };
 };
 
+// This funcition format data to be sent to API
 export const formatArrayToSync = (dataArr: ICheckItem[]) => {
   const checklists = dataArr.map(item => ({
     id: String(item._id) || String(Date.now()),
@@ -79,6 +79,7 @@ export const formatArrayToSync = (dataArr: ICheckItem[]) => {
   return { checklists };
 };
 
+// This function format data to be updated
 export const formatToEdit = (data: CheckListType) => {
   return {
     type: data.type,

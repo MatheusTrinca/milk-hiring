@@ -45,7 +45,6 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
   useEffect(() => {
     console.log('Fetching Items');
     if (connectionStatus === 'healthy') {
-      // syncronyzeDatabase();
       fetchCheckListItems();
     } else {
       fetchCheckListFromRealm();
@@ -61,7 +60,7 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     } catch (err) {
       Alert.alert(
         'Milk Hiring',
-        'You seems to not have an internet connection, using offline mode'
+        'You seems to not have an internet connection, using offline mode now'
       );
     }
   }, []);
@@ -97,7 +96,7 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     }
   };
 
-  // This function runs when we connection status is unhealthy
+  // This function runs when we connection status is unhealthy fetching data from Realm
   const fetchCheckListFromRealm = async () => {
     const realm = await getRealm();
     try {

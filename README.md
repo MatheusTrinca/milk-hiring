@@ -25,6 +25,7 @@ yarn install
 
 ## Usage
 
+- Rename .env.example file to .env and fill the env variables
 - Run metro bundler and
 
 ```
