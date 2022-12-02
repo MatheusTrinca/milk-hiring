@@ -7,6 +7,9 @@ import {
   HeaderContainer,
   AddButtonIcon,
   AddButton,
+  StatusContainer,
+  StatusIndicator,
+  StatusText,
 } from './styles';
 import { ICheckItem } from '../../models/CheckItem';
 import { ActivityIndicator, Alert, ListRenderItem } from 'react-native';
@@ -17,7 +20,8 @@ import { useNavigation } from '@react-navigation/native';
 import { CreateScreenNavigationProp } from '../../routes/app.routes';
 
 export const HomeScreen: React.FC = () => {
-  const { checkListItems, loading, error } = useCheckListContext();
+  const { checkListItems, loading, error, connectionStatus } =
+    useCheckListContext();
 
   const navigation = useNavigation<CreateScreenNavigationProp>();
 
@@ -40,6 +44,17 @@ export const HomeScreen: React.FC = () => {
   return (
     <Container>
       <HeaderContainer>
+        {connectionStatus !== 'healthy' ? (
+          <StatusContainer>
+            <StatusIndicator color="danger" />
+            <StatusText color="danger">Offline</StatusText>
+          </StatusContainer>
+        ) : (
+          <StatusContainer>
+            <StatusIndicator color="success" />
+            <StatusText color="success">Online</StatusText>
+          </StatusContainer>
+        )}
         <Title>Your Checklists</Title>
         <AddButton
           onPress={() =>

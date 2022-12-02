@@ -59,8 +59,8 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
       }
     } catch (err) {
       Alert.alert(
-        'Milk Hiring',
-        'You seems to not have an internet connection, using offline mode now'
+        'You seems to not have an internet connection',
+        'Using offline mode now, your data will be synced next time you connect internet'
       );
     }
   }, []);
@@ -71,22 +71,29 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
     console.log(connectionStatus);
     try {
       setLoading(true);
-      const { data } = await api.get('/checkList');
-      if (data) {
-        setCheckListItems(data);
-        const checkListsToDelete = realm.objects('CheckList');
+      const checkListsToSync = realm.objects('CheckList');
+
+      // Syncing RealmDB data with API
+      if (checkListsToSync.length > 0) {
+        const checkListsItemsToSync = checkListsToSync.toJSON();
+
+        const formatFromRealmArray = checkListsItemsToSync.map(item =>
+          formatFromRealm(item as CheckListType)
+        );
+
+        const formattedToSync = formatArrayToSync(formatFromRealmArray);
+
+        await api.post('/checkList', formattedToSync);
+
+        // Destroying old RealmDB data
         realm.write(() => {
-          realm.delete(checkListsToDelete);
-        });
-        data.forEach((item: ICheckItem) => {
-          realm.write(() => {
-            realm.create('CheckList', {
-              _id: item._id || +Date.now(),
-              ...formatDataToRealm(item),
-            });
-          });
+          realm.deleteAll();
         });
       }
+
+      // Getting new updated data from API
+      const { data } = await api.get('/checkList');
+      setCheckListItems(data);
     } catch (err) {
       console.error(err);
       setError(new Error(err as string));
@@ -146,7 +153,6 @@ export const CheckListProvider: React.FC<IProps> = ({ children }) => {
       setLoading(true);
       if (connectionStatus === 'healthy') {
         const checkListItem = formatToEdit(checkList);
-        console.log(checkListItem);
         await api.put(`/checkList/${id}`, checkListItem);
       } else {
         realm.write(() => {
