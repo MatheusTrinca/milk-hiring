@@ -65,7 +65,8 @@ export const EditScreen: React.FC = () => {
       farmCity.length === 0 ||
       typeChecked.length === 0 ||
       milkAmount.length === 0 ||
-      cowsHead.length === 0
+      cowsHead.length === 0 ||
+      (hadSupervisorChecked && supervisorName.length === 0)
     ) {
       return Alert.alert(
         'Milk Hiring Error',
