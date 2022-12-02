@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import theme from './src/global/styles/theme';
@@ -14,6 +13,7 @@ SplashScreen.preventAutoHideAsync();
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CheckListProvider } from './src/contexts/CheckListContext';
+import { AuthProvider } from './src/contexts/AuthContext';
 
 const App: React.FC = () => {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -50,16 +50,13 @@ const App: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <ThemeProvider theme={theme}>
-        <CheckListProvider>
-          <NavigationContainer>
-            <Routes />
-            <StatusBar
-              style="auto"
-              translucent
-              backgroundColor={theme.colors.light}
-            />
-          </NavigationContainer>
-        </CheckListProvider>
+        <AuthProvider>
+          <CheckListProvider>
+            <NavigationContainer>
+              <Routes />
+            </NavigationContainer>
+          </CheckListProvider>
+        </AuthProvider>
       </ThemeProvider>
     </SafeAreaView>
   );
