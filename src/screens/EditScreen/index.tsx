@@ -224,7 +224,7 @@ export const EditScreen: React.FC = () => {
                 onChangeText={setSupervisorName}
               />
             )}
-            <MainButton onPress={handleSubmit} title="Add Checklist" />
+            <MainButton onPress={handleSubmit} title="Save Checklist" />
           </FormContainer>
         </Container>
       </ScrollView>

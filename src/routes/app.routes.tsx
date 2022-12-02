@@ -88,7 +88,11 @@ export const AppRoutes: React.FC = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Create" component={CreateStack} />
+      <Tab.Screen
+        name="Create"
+        component={CreateStack}
+        options={{ unmountOnBlur: true }}
+      />
     </Tab.Navigator>
   );
 };
